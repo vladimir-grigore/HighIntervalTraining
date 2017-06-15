@@ -13,7 +13,7 @@ export default class App extends React.Component {
   }
 
   startTimer = () => {
-    this.setState({ timerRunning: true, startButtonText: 'Pause', timerLimit: 10 });
+    this.setState({ timerRunning: true, startButtonText: 'Pause', timerLimit: 5 });
   }
 
   stopTimer = () => {
