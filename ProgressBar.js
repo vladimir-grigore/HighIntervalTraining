@@ -1,6 +1,6 @@
 import ProgressBarComponent from 'ProgressBarAndroid';
 import React, {Component} from 'react';
-import Text from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 class ProgressBar extends Component {
   constructor(props) {
@@ -16,7 +16,6 @@ class ProgressBar extends Component {
       let progress = currentTime / this.props.maxTime;
       this.setState({ progress });
       currentTime += 0.1;
-      // console.log('progress bar', currentTime / this.props.maxTime);
       if(currentTime >= this.props.maxTime){
         this.props.timerFinish();
       }
@@ -29,7 +28,10 @@ class ProgressBar extends Component {
 
   render(){
     return(
-      <ProgressBarComponent progress={this.state.progress} styleAttr="Horizontal" indeterminate={false} />
+      <View>
+        <ProgressBarComponent progress={this.state.progress} styleAttr="Horizontal" indeterminate={false} />
+        <Text>{this.props.timer.timeRemaining / 1000}</Text>
+      </View>
     )
   }
 }
