@@ -22,10 +22,17 @@ export default class App extends React.Component {
 
   stopTimer = () => {
     this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: 'Welcome to High Intensity Interval Training!' });
+    timer.stop();
   }
 
   pauseTimer = () => {
-    this.setState({ timerRunning: false, startButtonText: 'Resume' });
+    this.setState({ startButtonText: 'Resume' });
+    timer.pause();
+  }
+
+  resumeTimer = () => {
+    this.setState({ timerRunning: true, startButtonText: 'Pause' });
+    timer.resume();
   }
 
   timerFinish = () => {
@@ -35,7 +42,17 @@ export default class App extends React.Component {
 
   startIntervalWorkout = () => {
     console.log("start workout")
-    this.startTimer(10, 'Rest');
+    this.startTimer(20, 'Rest');
+  }
+
+  handleStartClick = () => {
+    if(this.state.startButtonText === 'Start'){
+      this.startIntervalWorkout();
+    } else if(this.state.startButtonText === 'Pause'){
+      this.pauseTimer();
+    } else {
+      this.resumeTimer();
+    }
   }
 
   render() {
@@ -51,7 +68,7 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>{this.state.type}</Text>
         <Button
-          onPress={!this.state.timerRunning ? this.startIntervalWorkout : this.pauseTimer}
+          onPress={this.handleStartClick}
           title={this.state.startButtonText}
           color="#0909ea"
         />

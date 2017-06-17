@@ -3,7 +3,7 @@ export default class Timer{
     this.startTime = 0;
     this.endTime = 0;
     this.running = false;
-    this.timeout = 250;
+    this.timeout = 100;
     this.timeRemaining = 0;
   }
 
