@@ -31,12 +31,21 @@ class ProgressBar extends Component {
 
   render(){
     return(
-      <View>
+      <View style={styles.container}>
         <ProgressBarComponent progress={this.state.progress} styleAttr="Horizontal" indeterminate={false} />
         <Text>Time remaining: {this.props.timer.timeRemaining / 1000}</Text>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    // backgroundColor: '#555',
+    alignItems: 'center',
+    // justifyContent: 'center',
+  },
+});
 
 export default ProgressBar;

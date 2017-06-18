@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import ProgressBar from './ProgressBar';
 import Timer from './Timer'
 const timer = new Timer();
+var running = false;
 
 export default class App extends React.Component {
     constructor(props) {
@@ -15,9 +16,15 @@ export default class App extends React.Component {
     }
   }
 
-  startTimer = (limit, type) => {
+  startTimer = (limit, type, callback) => {
     this.setState({ timerRunning: true, startButtonText: 'Pause', timerLimit: limit, type });
     timer.start(limit);
+    let interval = setInterval(() => {
+      if(timer.timeRemaining <= 0){
+        clearInterval(interval);
+        callback();
+      }
+    }, 100);
   }
 
   stopTimer = () => {
@@ -37,17 +44,36 @@ export default class App extends React.Component {
 
   timerFinish = () => {
     this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: 'Welcome to High Intensity Interval Training!' });
-    console.log('finish:', this.state.timerRunning);
+    timer.stop();
   }
 
-  startIntervalWorkout = () => {
-    console.log("start workout")
-    this.startTimer(20, 'Rest');
+  startIntervalWorkout = (times) => {
+    running = true;
+    this.startTimer(30, "Workout", () => {
+      this.startTimer(10, "Rest", () => {
+        running = false;
+        times -= 1;
+      });
+    });
+
+    let interval = setInterval(() => {
+      if(!running){
+        clearInterval(interval);
+        if(times > 0){
+          this.startIntervalWorkout(times);
+        }
+        if(times === 0){
+          this.startTimer(30, "Rest", () => {
+            console.log("Workout finished!");
+          });
+        }
+      }
+    }, 100);
   }
 
   handleStartClick = () => {
     if(this.state.startButtonText === 'Start'){
-      this.startIntervalWorkout();
+      this.startIntervalWorkout(10);
     } else if(this.state.startButtonText === 'Pause'){
       this.pauseTimer();
     } else {
