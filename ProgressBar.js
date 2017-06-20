@@ -1,4 +1,4 @@
-import ProgressBarComponent from 'ProgressBarAndroid';
+import Progress_Bar from 'react-native-progress/Bar';
 import React, {Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -15,6 +15,7 @@ class ProgressBar extends Component {
     return (maxAllowed - minAllowed) * (unscaledNum - min) / (max - min) + minAllowed;
   }
 
+  // Update progress until timer is finished
   componentDidMount = () => {
     this.timer = setInterval(() => {
       let progress = this.scaleBetween(this.props.timer.timeRemaining, 1, 0, 0, this.props.maxTime * 1000);
@@ -29,11 +30,12 @@ class ProgressBar extends Component {
     clearInterval(this.timer);
   }
 
-  render(){
+render(){
     return(
       <View style={styles.container}>
-        <ProgressBarComponent progress={this.state.progress} styleAttr="Horizontal" indeterminate={false} />
-        <Text>Time remaining: {this.props.timer.timeRemaining / 1000}</Text>
+        <Progress_Bar progress={this.state.progress} width={300} height={20}/>
+        <Text style={styles.timerText}>Time remaining:</Text>
+        <Text style={styles.timerText}>{this.props.timer.timeRemaining / 1000}</Text>
       </View>
     )
   }
@@ -41,11 +43,18 @@ class ProgressBar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // backgroundColor: '#555',
+    flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
+    padding: 10,
   },
+  timerText: {
+    color: 'white',
+    fontWeight: '200',
+    fontSize: 20,
+    textShadowColor: '#252525',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 15,
+  }
 });
 
 export default ProgressBar;

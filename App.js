@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import ProgressBar from './ProgressBar';
 import Timer from './Timer'
 const timer = new Timer();
@@ -92,18 +92,20 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>{this.state.type}</Text>
-        <Button
-          onPress={this.handleStartClick}
-          title={this.state.startButtonText}
-          color="#0909ea"
-        />
-        <Button
-          onPress={this.stopTimer}
-          title="Stop"
-          color="#841584"
-        />
-        {displayProgressBar()}
+        <Image source={require('./img/background.jpg')} style={styles.backgroundImage}>
+          <Text style={styles.header}>{this.state.type}</Text>
+          <View style={styles.progressBar}>
+            {displayProgressBar()}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.startButton}
+              onPress={this.handleStartClick}
+            >{this.state.startButtonText}</Text>
+            <Text style={styles.stopButton}
+              onPress={this.stopTimer}
+            >Stop</Text>
+            </View>
+          </Image>
       </View>
     );
   }
@@ -114,6 +116,70 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
     alignItems: 'center',
-    justifyContent: 'center',
   },
+  header: {
+    flex: 1,
+    textAlignVertical: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    height: 66,
+    fontSize: 30,
+    color: 'white',
+    fontWeight: '200',
+    textShadowColor: '#252525',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 15,
+  },
+  buttonContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 30,
+  },
+  startButton: {
+    backgroundColor: '#27ae60',
+    borderRadius: 10,
+    width: 100,
+    height: 50,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 20,
+    color: 'white',
+    fontWeight: '100',
+    textShadowColor: '#252525',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 15,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
+  },
+  stopButton: {
+    backgroundColor: '#c0392b',
+    borderRadius: 10,
+    width: 100,
+    height: 50,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 20,
+    color: 'white',
+    fontWeight: '100',
+    textShadowColor: '#252525',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 15,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
+  },
+  backgroundImage: {
+    flex: 1, 
+    alignSelf: 'stretch',
+    width: null,
+    justifyContent: 'center'
+  },
+  progressBar: {
+    height: 100,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
+  }
 });
