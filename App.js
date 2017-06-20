@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import Expo, { Audio } from 'expo';
 import ProgressBar from './ProgressBar';
 import Timer from './Timer'
 const timer = new Timer();
 var running = false;
+const soundObject = new Expo.Audio.Sound();
 
 export default class App extends React.Component {
     constructor(props) {
@@ -12,7 +14,7 @@ export default class App extends React.Component {
       startButtonText: 'Start',
       timerLimit: 0,
       timerRunning: false,
-      type: 'Welcome to High Intensity Interval Training!'
+      type: null
     }
   }
 
@@ -22,13 +24,14 @@ export default class App extends React.Component {
     let interval = setInterval(() => {
       if(timer.timeRemaining <= 0){
         clearInterval(interval);
+        this.playSound();
         callback();
       }
     }, 100);
   }
 
   stopTimer = () => {
-    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: 'Welcome to High Intensity Interval Training!' });
+    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null });
     timer.stop();
   }
 
@@ -43,8 +46,20 @@ export default class App extends React.Component {
   }
 
   timerFinish = () => {
-    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: 'Welcome to High Intensity Interval Training!' });
+    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null });
     timer.stop();
+  }
+
+  playSound = async () => {
+    try {
+      const { soundObject, status } = await Expo.Audio.Sound.create(
+        require('./ding.mp3'),
+        { shouldPlay: true }
+      );
+      // Your sound is playing!
+    } catch (error) {
+      // An error occurred!
+    }
   }
 
   startIntervalWorkout = (times) => {
@@ -93,6 +108,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Image source={require('./img/background.jpg')} style={styles.backgroundImage}>
+          <Text style={styles.header}>High Intensity Interval Training</Text>
           <Text style={styles.header}>{this.state.type}</Text>
           <View style={styles.progressBar}>
             {displayProgressBar()}
@@ -139,7 +155,7 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   startButton: {
-    backgroundColor: '#27ae60',
+    backgroundColor: '#3f872b',
     borderRadius: 10,
     width: 100,
     height: 50,
@@ -178,8 +194,5 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 100,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderColor: 'rgba(255, 255, 255, 0.6)',
-    borderWidth: 1,
-  }
+  },
 });
