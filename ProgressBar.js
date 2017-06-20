@@ -35,7 +35,7 @@ render(){
       <View style={styles.container}>
         <Progress_Bar progress={this.state.progress} width={300} height={20}/>
         <Text style={styles.timerText}>Time remaining:</Text>
-        <Text style={styles.timerText}>{this.props.timer.timeRemaining / 1000}</Text>
+        <Text style={styles.timerText}>{ (this.props.timer.timeRemaining / 1000).toFixed(1) }</Text>
       </View>
     )
   }
@@ -45,17 +45,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderColor: 'rgba(255, 255, 255, 0.6)',
     borderWidth: 1,
   },
   timerText: {
-    width: 150,
+    width: 200,
+    height: 40,
     textAlign: 'center',
     color: 'white',
     fontWeight: '200',
-    fontSize: 20,
+    fontSize: 25,
     textShadowColor: '#252525',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 15,

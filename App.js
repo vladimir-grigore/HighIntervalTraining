@@ -193,6 +193,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   progressBar: {
-    height: 100,
+    height: 150,
   },
 });
