@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderColor: 'rgba(255, 255, 255, 0.6)',
-    borderWidth: 1,
   },
   timerText: {
     width: 200,

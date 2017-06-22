@@ -14,7 +14,8 @@ export default class App extends React.Component {
       startButtonText: 'Start',
       timerLimit: 0,
       timerRunning: false,
-      type: null
+      type: null,
+      workouts: []
     }
   }
 
@@ -31,7 +32,9 @@ export default class App extends React.Component {
   }
 
   stopTimer = () => {
-    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null });
+    let workouts = this.state.workouts;
+    workouts = [];
+    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null, workouts });
     timer.stop();
   }
 
@@ -68,6 +71,9 @@ export default class App extends React.Component {
       this.startTimer(10, "Rest", () => {
         running = false;
         times -= 1;
+        let workouts = this.state.workouts;
+        workouts.push(times);
+        this.setState({ workouts });
       });
     });
 
@@ -79,7 +85,9 @@ export default class App extends React.Component {
         }
         if(times === 0){
           this.startTimer(30, "Rest", () => {
-            console.log("Workout finished!");
+            let workouts = this.state.workouts;
+            workouts = [];
+            this.setState({ workouts });
           });
         }
       }
@@ -105,6 +113,19 @@ export default class App extends React.Component {
       }
     }
 
+    displayWorkoutCounter = () => {
+      const workoutImage = Object.keys(this.state.workouts)
+        .map(count => <Image key={count} source={require('./img/workout.png')} style={styles.counterImage} />);
+        if(this.state.workouts.length){
+          return (
+            <View style={styles.workoutCounter}>
+              {workoutImage}
+            </View>);
+        } else {
+          return null;
+        }
+    }
+
     return (
       <View style={styles.container}>
         <Image source={require('./img/background.jpg')} style={styles.backgroundImage}>
@@ -113,11 +134,12 @@ export default class App extends React.Component {
           <View style={styles.progressBar}>
             {displayProgressBar()}
           </View>
+            {displayWorkoutCounter()}
           <View style={styles.buttonContainer}>
-            <Text style={styles.startButton}
+            <Text style={[styles.startButton, styles.button]}
               onPress={this.handleStartClick}
             >{this.state.startButtonText}</Text>
-            <Text style={styles.stopButton}
+            <Text style={[styles.stopButton, styles.button]}
               onPress={this.stopTimer}
             >Stop</Text>
             </View>
@@ -131,47 +153,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
-    alignItems: 'center',
+  },
+    backgroundImage: {
+    flex: 1,
+    width: null,
   },
   header: {
     flex: 1,
+    paddingTop: 15,
     textAlignVertical: 'center',
-    alignItems: 'center',
     textAlign: 'center',
-    height: 66,
-    fontSize: 30,
+    height: 20,
+    fontSize: 20,
     color: 'white',
     fontWeight: '200',
     textShadowColor: '#252525',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 15,
   },
-  buttonContainer: {
-    flex: 2,
+  workoutCounter: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     flexDirection: 'row',
-    alignSelf: 'stretch',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  counterImage: {
+    transform: [{scale: 0.12}],
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 30,
+    padding: 20,
   },
   startButton: {
     backgroundColor: '#3f872b',
-    borderRadius: 10,
-    width: 100,
-    height: 50,
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    fontSize: 20,
-    color: 'white',
-    fontWeight: '100',
-    textShadowColor: '#252525',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 15,
-    borderColor: 'rgba(255, 255, 255, 0.6)',
-    borderWidth: 1,
   },
   stopButton: {
     backgroundColor: '#c0392b',
+  },
+  button: {
     borderRadius: 10,
     width: 100,
     height: 50,
@@ -186,13 +209,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.6)',
     borderWidth: 1,
   },
-  backgroundImage: {
-    flex: 1, 
-    alignSelf: 'stretch',
-    width: null,
-    justifyContent: 'center'
-  },
   progressBar: {
-    height: 150,
+    flex: 4,
   },
 });
