@@ -127,6 +127,7 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
+        <Expo.KeepAwake />
         <Image source={require('./img/background.jpg')} style={styles.backgroundImage}>
           <Text style={styles.header}>High Intensity Interval Training</Text>
           <Text style={styles.header}>{this.state.type}</Text>
