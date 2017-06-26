@@ -32,8 +32,7 @@ export default class App extends React.Component {
   }
 
   stopTimer = () => {
-    let workouts = this.state.workouts;
-    workouts = [];
+    let workouts = [];
     this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null, workouts });
     timer.stop();
   }
@@ -49,8 +48,8 @@ export default class App extends React.Component {
   }
 
   timerFinish = () => {
-    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null });
     timer.stop();
+    this.setState({ timerRunning: false, startButtonText: 'Start', timerLimit: 0, type: null });
   }
 
   playSound = async () => {
@@ -85,8 +84,7 @@ export default class App extends React.Component {
         }
         if(times === 0){
           this.startTimer(30, "Rest", () => {
-            let workouts = this.state.workouts;
-            workouts = [];
+            let workouts = [];
             this.setState({ workouts });
           });
         }
@@ -120,7 +118,8 @@ export default class App extends React.Component {
           return (
             <View style={styles.workoutCounter}>
               {workoutImage}
-            </View>);
+            </View>
+          );
         } else {
           return null;
         }
@@ -134,7 +133,9 @@ export default class App extends React.Component {
           <View style={styles.progressBar}>
             {displayProgressBar()}
           </View>
+          <View style={styles.counterContainer}>
             {displayWorkoutCounter()}
+          </View>
           <View style={styles.buttonContainer}>
             <Text style={[styles.startButton, styles.button]}
               onPress={this.handleStartClick}
@@ -170,6 +171,9 @@ const styles = StyleSheet.create({
     textShadowColor: '#252525',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 15,
+  },
+  counterContainer: {
+    flex: 1,
   },
   workoutCounter: {
     flex: 1,
@@ -210,6 +214,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   progressBar: {
-    flex: 4,
+    flex: 3,
   },
 });
